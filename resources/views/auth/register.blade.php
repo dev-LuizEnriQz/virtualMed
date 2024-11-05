@@ -16,6 +16,13 @@
             <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
 
+        <!--University-->
+        <div class="mt-4">
+            <x-input-label for="university" :value="__('Universidad')" />
+            <x-text-input id="university" class="block mt-1 w-full" type="text" name="university" :value="old('university')" required autofocus autocomplete="university" />
+            <x-input-error :messages="$errors->get('university')" class="mt-2" />
+        </div>
+
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />

@@ -20,6 +20,6 @@ Route::middleware('auth')->group(function () {
 //Pagina de prueba
 Route::get('/prueba', function () {
     return view('prueba');
-});
+})->name('prueba');
 
 require __DIR__.'/auth.php';
