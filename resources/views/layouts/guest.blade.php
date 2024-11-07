@@ -19,16 +19,7 @@
 
             @include('layouts.navigation')
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-8 p-4">
-                        <div class="card">
-                            <div class="card-header text-center">{{__('Inicio de Sesión')}}</div>
-                            <div class="card-body">
-                                {{ $slot }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {{ $slot }}
             </div>
         </div>
     </body>
