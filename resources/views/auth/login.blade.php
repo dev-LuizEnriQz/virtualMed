@@ -37,16 +37,16 @@
                                 </label>
                             </div>
                             <div class="row mt-3">
-                                <div class="col-md-5">
+                                <div class="col-md-4 mt-2">
                                     @if (Route::has('password.request'))
                                         <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
                                             {{ __('Olvidaste tu contraseña?') }}
                                         </a>
                                     @endif
                                 </div>
-                                <div class="col-md-6">
-                                    <x-primary-button class="btn btn-primary">
-                                        {{ __('Submit') }}
+                                <div class="col-md-4 mt-2">
+                                    <x-primary-button class="btn btn-primary w-100">
+                                        {{ __('Iniciar de Sesión') }}
                                     </x-primary-button>
                                 </div>
                             </div>
