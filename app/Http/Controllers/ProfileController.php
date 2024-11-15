@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Profile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +15,17 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(): View
     {
+        $user = Auth::user();
+
+        if (!$user->profile){
+            $user->profile()->create();
+        }
+/*        dd($user->profile->state);*/
         return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+            'user' => $user,
+            'profile' => $user->profile]);
     }
 
     /**
@@ -26,7 +33,38 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = Auth::user();//verifica que el usuario esta autentificado
+
+        //Si no hay un usuario autentificado, lanza error y redirige
+        if (!$user) {
+            return redirect()->route('login')->withErrors('Usuario no autentificado');
+        }
+
+        //Actualizar DATOS DEL USUARIO-TABLA USERS
+        $user->fill($request->only(['first_name', 'last_name', 'second_surname', 'university']));
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+        $user->save();
+
+
+        //Actualizar DATOS DEL PERFIL USUARIO-TABLA USER_PROFILE
+        $profile = $user->profile;
+
+        if (!$profile) {
+            $profile = $user->profile()->create([]);
+        }
+        //Asegurar de que el perfil existe antes de actualizar
+        if ($profile) {
+            $profile->fill($request->only(['cellphone', 'city', 'state', 'country', 'age', 'birthday', 'gender']));
+            $profile->save();
+        }
+
+        return redirect()->route('profile.edit')->with('status', 'profile-updated');
+    }
+        //Codigo Original
+ /*       $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -35,7 +73,7 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
+    }*/
 
     /**
      * Delete the user's account.
